@@ -1,5 +1,6 @@
 # python
 *.egg-info/
+__pycache__/
 
 # pixi environments
 .pixi/*
@@ -11,4 +12,3 @@ public
 /data/*
 !/data/.gitkeep
 /static/css/highlight.css
-/ingest/*
