@@ -22,6 +22,7 @@ platforms = ["osx-arm64", "linux-64"]
 [tool.pixi.dependencies]
 python = ">=3.11"
 hugo = ">=0.126"
+gh = ">=2.95.0"
 
 [tool.pixi.pypi-dependencies]
 modelblocks-directory-ingest = { path = ".", editable = true }

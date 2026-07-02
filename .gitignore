@@ -1,3 +1,6 @@
+# python
+*.egg-info/
+
 # pixi environments
 .pixi/*
 !.pixi/config.toml
@@ -8,3 +11,4 @@ public
 /data/*
 !/data/.gitkeep
 /static/css/highlight.css
+/ingest/*

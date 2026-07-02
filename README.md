@@ -13,7 +13,7 @@ How to use:
 pixi install
 
 # The ingest script needs a GITHUB_TOKEN
-export GITHUB_TOKEN=ghp_...
+export GITHUB_TOKEN="$(gh auth token)"
 
 # Runs ingest, then the local live preview
 pixi run serve

@@ -191,6 +191,10 @@ def parse_contributors(rc_json: str, source: str = "") -> list[dict[str, Any]]:
     except json.JSONDecodeError as exc:
         warn(f"invalid JSON ({exc}); no contributors parsed")
         return []
+    sort_alphabetically = (
+        data.get("contributorsSortAlphabetically") is True
+        if isinstance(data, dict) else False
+    )
     raw = data.get("contributors") if isinstance(data, dict) else None
     if not isinstance(raw, list):
         warn("no 'contributors' list found; no contributors parsed")
@@ -214,6 +218,14 @@ def parse_contributors(rc_json: str, source: str = "") -> list[dict[str, Any]]:
     if skipped:
         warn(f"skipped {skipped} invalid contributor "
              f"{'entry' if skipped == 1 else 'entries'}")
+    if sort_alphabetically:
+        out.sort(
+            key=lambda c: (
+                (c["name"] or "").casefold(),
+                c["name"] or "",
+                c["login"].lower(),
+            )
+        )
     return out
 
 
