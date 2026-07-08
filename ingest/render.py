@@ -328,11 +328,12 @@ def process_module(
     convention_major = cv.lstrip("vV").split(".")[0] if cv else None
 
     return {
-        "id": copier.module_short_name,
-        "name": copier.module_long_name,
+        "id": copier.module_code_name,
+        "name": copier.module_human_name,
         "summary": copier.module_description,
         "license": copier.license,
-        "authors": [copier.author] if copier.author else [],
+        "authors": copier.author_names,
+        "maintainers": copier.maintainer_names,
         "description_html": render_readme(extract_intro(readme_md), image_base_url=image_base),
         "pathvars": pathvars,
         "wildcards": wildcards,

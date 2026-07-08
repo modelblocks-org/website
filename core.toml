@@ -11,7 +11,8 @@
 modules = [
   "https://github.com/modelblocks-org/module_geo_boundaries",
   "https://github.com/modelblocks-org/module_powerplants",
-  "https://github.com/modelblocks-org/module_area_potentials",
+  # No v1.0-format release yet; track main until one exists
+  { repo = "https://github.com/modelblocks-org/module_area_potentials", ref = "main" },
   "https://github.com/modelblocks-org/module_hydropower",
 ]
 
@@ -27,4 +28,5 @@ tools = [
   "https://github.com/modelblocks-org/gregor",
   "https://github.com/modelblocks-org/data-module-template",
   "https://github.com/modelblocks-org/docs",
+  "https://github.com/modelblocks-org/website",
 ]

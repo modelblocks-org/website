@@ -1,4 +1,5 @@
 """Pydantic models — the validation half of the trust boundary."""
+
 from __future__ import annotations
 
 import re
@@ -13,35 +14,65 @@ from pydantic import (
     field_validator,
 )
 
-_ID_RE = re.compile(r"^module_[a-z0-9][a-z0-9_]{0,63}$")
+# A module id is a URL path segment + dict key, so it stays lowercase and
+# URL-safe. This mirrors the copier template's `module_code_name` validator
+# (`^[a-z][a-z0-9_]*$`); the `module_` prefix is only a naming convention for
+# core modules, not enforced here.
+_ID_RE = re.compile(r"^[a-z][a-z0-9_]{0,63}$")
+
+
+# ---------------------------------------------------------------------------
+# UNTRUSTED: a person entry in .copier-answers.yml (author / maintainer)
+# The v1.0 convention lists authors and maintainers as structured people. We
+# only surface the display name; the email is validated upstream by copier and
+# is not published, so it is merely length-capped here.
+# ---------------------------------------------------------------------------
+class Person(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    given_name: str | None = Field(default=None, max_length=100)
+    family_name: str | None = Field(default=None, max_length=100)
+    email: str | None = Field(default=None, max_length=200)
+
+    @property
+    def name(self) -> str | None:
+        parts = [p for p in (self.given_name, self.family_name) if p]
+        return " ".join(parts) or None
+
 
 # ---------------------------------------------------------------------------
 # UNTRUSTED: .copier-answers.yml
 # The module's identity + display metadata. Written by Copier from the module
 # template; we read only the fields we surface and ignore the rest (_commit,
-# _src_path, github_org, ...). `module_short_name` becomes the module id and is
-# used as a URL path segment + dict key, so it is strictly validated.
+# _src_path, github_org, ...). `module_code_name` becomes the module id and is
+# used as a URL path segment + dict key, so it is strictly validated. Only the
+# v1.0 convention is supported; a module must publish a v1.0-format release (or
+# be pinned to a v1.0 ref) to appear in the directory.
 # ---------------------------------------------------------------------------
 class CopierAnswers(BaseModel):
     model_config = ConfigDict(extra="ignore")
-    module_short_name: str = Field(max_length=64)          # -> id
-    module_long_name: str = Field(max_length=200)          # -> display name
-    module_description: str = Field(max_length=600)        # -> summary
+    module_code_name: str = Field(max_length=64)  # -> id
+    module_human_name: str = Field(max_length=200)  # -> display name
+    module_description: str = Field(max_length=600)  # -> summary
     license: str | None = Field(default=None, max_length=100)
-    author_given_name: str | None = Field(default=None, max_length=100)
-    author_family_name: str | None = Field(default=None, max_length=100)
+    authors: list[Person] = Field(default_factory=list, max_length=100)
+    maintainers: list[Person] = Field(default_factory=list, max_length=100)
 
-    @field_validator("module_short_name")
+    @field_validator("module_code_name")
     @classmethod
     def _check_id(cls, v: str) -> str:
         if not _ID_RE.match(v):
-            raise ValueError("module_short_name must look like module_<lowercase_name>")
+            raise ValueError(
+                "module_code_name must be lowercase snake_case (e.g. module_foo)"
+            )
         return v
 
     @property
-    def author(self) -> str | None:
-        parts = [p for p in (self.author_given_name, self.author_family_name) if p]
-        return " ".join(parts) or None
+    def author_names(self) -> list[str]:
+        return [p.name for p in self.authors if p.name]
+
+    @property
+    def maintainer_names(self) -> list[str]:
+        return [p.name for p in self.maintainers if p.name]
 
 
 # ---------------------------------------------------------------------------
@@ -64,6 +95,7 @@ class PathVar(BaseModel):
 
 class Interface(BaseModel):
     """Lenient: unknown keys are stripped. Used for the community tier."""
+
     model_config = ConfigDict(extra="ignore")
     convention_version: str | None = Field(default=None, max_length=40)
     pathvars: dict[str, dict[str, PathVar]] = Field(default_factory=dict, max_length=50)
@@ -79,6 +111,7 @@ class Interface(BaseModel):
 
 class InterfaceStrict(Interface):
     """Strict: unknown top-level keys are an error. Used for the core tier."""
+
     model_config = ConfigDict(extra="forbid")
 
 
