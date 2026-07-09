@@ -295,6 +295,7 @@ def process_module(
     updated: str,
     version: str | None = None,
     ref: str | None = None,
+    work_in_progress: bool = False,
 ) -> dict[str, Any]:
     """Build one trusted record. Raises on invalid input; caller sets policy.
 
@@ -347,6 +348,7 @@ def process_module(
         "version": version,
         "version_url": version_url,
         "ref": ref,
+        "work_in_progress": work_in_progress,
     }
 
 
@@ -368,7 +370,31 @@ def write_contributors(contributors: list[dict], data_dir: Path) -> None:
     )
 
 
+# Pygments has no built-in "github" light style (only github-dark).
+# "friendly" is the closest match.
+_LIGHT_HL_STYLE = "friendly"
+_DARK_HL_STYLE = "github-dark"
+
+# The bare-container rule, e.g. ".highlight { background: #f8f8f8; }" is the only
+# rule where `.highlight` is followed directly by `{` (token rules read
+# ".highlight .s {"). Dropped so Pico styles the code background in both schemes.
+_HL_CONTAINER_RE = re.compile(r"^[^\n{}]*\.highlight\s*\{[^}]*\}\s*$", re.MULTILINE)
+
+
+def _highlight_defs(style: str, selector: str) -> str:
+    defs = HtmlFormatter(style=style, cssclass="highlight").get_style_defs(selector)
+    return _HL_CONTAINER_RE.sub("", defs).strip()
+
+
 def write_highlight_css(path: Path) -> None:
-    """Emit the Pygments stylesheet once; the base layout links it."""
+    """Emit the Pygments stylesheet (light + dark token colors)"""
+    light = _highlight_defs(_LIGHT_HL_STYLE, ".highlight")
+    dark_media = _highlight_defs(_DARK_HL_STYLE, ":root:not([data-theme='light']) .highlight")
+    dark_attr = _highlight_defs(_DARK_HL_STYLE, "[data-theme='dark'] .highlight")
+    css = (
+        f"{light}\n\n"
+        f"@media (prefers-color-scheme: dark) {{\n{dark_media}\n}}\n\n"
+        f"{dark_attr}\n"
+    )
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(_FORMATTER.get_style_defs(".highlight"), encoding="utf-8")
+    path.write_text(css, encoding="utf-8")

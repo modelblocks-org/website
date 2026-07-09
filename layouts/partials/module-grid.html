@@ -2,6 +2,7 @@
     {{ range . }}
     <li>
         <a class="card" href="{{ .RelPermalink }}">
+            {{ if .Params.work_in_progress }}<span class="wip-ribbon"><span>in progress</span></span>{{ end }}
             <h3>{{ .Title }}</h3>
             <p class="summary">{{ .Params.summary }}</p>
             <span class="card-meta">
@@ -14,7 +15,7 @@
                 .Params.version }}<span class="kv kv-version"
                     ><span class="kv-key">release</span
                     ><span class="kv-val">{{ .Params.version }}</span></span
-                >{{ else }}<span class="kv kv-unreleased"
+                >{{ else if not .Params.work_in_progress }}<span class="kv kv-unreleased"
                     ><span class="kv-key">release</span
                     ><span class="kv-val">unreleased</span></span
                 >{{ end }}

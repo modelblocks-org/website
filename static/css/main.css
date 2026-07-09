@@ -1,20 +1,4 @@
 :root {
-    /* Tint Pico's primary (links, focus rings) with the ModelBlocks purple. */
-    --pico-primary: #7a4dd6;
-    --pico-primary-hover: #6a3dc6;
-    --pico-primary-focus: rgba(122, 77, 214, 0.3);
-    --pico-primary-underline: rgba(122, 77, 214, 0.5);
-}
-@media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-        --pico-primary: #b69bf0;
-        --pico-primary-hover: #c8b4f5;
-        --pico-primary-focus: rgba(182, 155, 240, 0.3);
-        --pico-primary-underline: rgba(182, 155, 240, 0.5);
-    }
-}
-
-:root {
     --pico-font-size: 83.5%;
 }
 @media (min-width: 576px) {
@@ -103,12 +87,10 @@ h3 {
     text-decoration: none;
     color: var(--pico-color);
     transition:
-        transform 0.12s ease,
         border-color 0.12s ease,
         box-shadow 0.12s ease;
 }
 .box:hover {
-    transform: translateY(-2px);
     border-color: var(--pico-primary);
     box-shadow: var(--pico-card-box-shadow);
 }
@@ -155,6 +137,8 @@ h3 {
     margin: 0;
 } /* beats Pico's `ul li{list-style:square}` */
 .module-grid .card {
+    position: relative; /* anchor for the .wip-ribbon corner banner */
+    overflow: hidden; /* clip the ribbon to the rounded corner */
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -166,18 +150,43 @@ h3 {
     text-decoration: none;
     color: var(--pico-color);
     transition:
-        transform 0.12s ease,
         border-color 0.12s ease,
         box-shadow 0.12s ease;
 }
 .module-grid .card:hover {
-    transform: translateY(-2px);
     border-color: var(--pico-primary);
     box-shadow: var(--pico-card-box-shadow);
 }
 .module-grid .card h3 {
     margin: 0;
     font-size: 1.05rem;
+    padding-right: 1.5rem; /* keep a long title clear of the corner ribbon */
+}
+
+/* --- work-in-progress corner ribbon --- */
+.wip-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 6rem;
+    height: 6rem;
+    overflow: hidden;
+    pointer-events: none;
+}
+.wip-ribbon > span {
+    position: absolute;
+    top: 1.05rem;
+    right: -2rem;
+    width: 7rem;
+    transform: rotate(45deg);
+    background: #e2e5ea;
+    color: #6b7280;
+    text-align: center;
+    font-size: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 0.15rem 0;
 }
 .module-grid .card .summary {
     margin: 0;
@@ -224,7 +233,9 @@ h3 {
     font-size: 0.7rem;
     font-weight: 600;
     line-height: 1.5;
-    vertical-align: middle;
+    /* Center the chip on running text (inline use, e.g. the Convention page).
+       Inert for the directory cards, where .kv is a flex item. */
+    vertical-align: 0.12em;
 }
 .kv-key,
 .kv-val {
@@ -267,9 +278,16 @@ dl.meta {
     display: grid;
     grid-template-columns: max-content 1fr;
     gap: 0.25rem 1rem;
+    align-items: center; /* keep each label centred with its value, incl. the badges row */
 }
 dl.meta dt {
     color: var(--pico-muted-color);
+}
+dl.meta dd.badges {
+    display: flex; /* like .card-meta: aligns .badge/.kv pills, ignores vertical-align */
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
 }
 
 .interface {

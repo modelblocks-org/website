@@ -75,6 +75,7 @@ def main() -> int:
                 updated=files["updated"],
                 version=version,
                 ref=ref,
+                work_in_progress=entry.get("work_in_progress", False),
             )
             if record["id"] in records:
                 raise ValueError(f"duplicate module id {record['id']!r} (also from another entry)")

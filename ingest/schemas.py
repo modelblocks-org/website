@@ -189,6 +189,8 @@ class CatalogEntry(BaseModel):
     ref: str | None = None  # None = auto-resolve to the repo's latest release
     subdir: str | None = None
     tier: Tier  # injected by the loader from the source file
+    # Curation flag: directory card shows a corner ribbon instead of a release pill
+    work_in_progress: bool = False
 
     @field_validator("repo")
     @classmethod

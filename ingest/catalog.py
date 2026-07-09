@@ -66,6 +66,7 @@ def read_catalog(catalog_files: dict[str, Path]) -> dict[str, list[dict]]:
             "tier": entry.tier,
             "owner": owner,
             "name": name,
+            "work_in_progress": entry.work_in_progress,
         })
 
     for tier, path in catalog_files.items():

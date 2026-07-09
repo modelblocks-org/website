@@ -6,7 +6,7 @@ ModelBlocks is an open project and your contributions are welcome.
 
 ## Governance
 
-**TO BE ADDED - links to governance document and 2-3 sentence summary.**
+Will be added shortly - stay tuned.
 
 ## Add a community module
 

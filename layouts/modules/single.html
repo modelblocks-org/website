@@ -4,14 +4,20 @@
     <h1>{{ .Title }}</h1>
     <p class="summary">{{ .Params.summary }}</p>
 
-    {{ if eq .Params.tier "community" }}
-      <p class="badge badge-community"
-         title="Contributed by the community; not vetted by modelblocks-org">
-        community module
-      </p>
-    {{ end }}
-
     <dl class="meta">
+      {{/* Tier + convention badges, mirroring the directory card for consistency. */}}
+      <dt>Classification</dt>
+      <dd class="badges">
+        {{ if eq .Params.tier "community" }}
+          <span class="badge badge-community"
+                title="Contributed by the community; not vetted by modelblocks-org">community</span>
+        {{ else }}
+          <span class="badge badge-{{ .Params.tier }}">{{ .Params.tier }}</span>
+        {{ end }}
+        {{ if .Params.convention_major }}
+          {{ partial "convention-pill.html" (dict "major" .Params.convention_major "version" .Params.convention_version) }}
+        {{ end }}
+      </dd>
       {{ with .Params.license }}<dt>License</dt><dd>{{ . }}</dd>{{ end }}
       {{ with .Params.authors }}<dt>Authors</dt><dd>{{ delimit . ", " }}</dd>{{ end }}
       {{ with .Params.maintainers }}<dt>Maintainers</dt><dd>{{ delimit . ", " }}</dd>{{ end }}
