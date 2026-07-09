@@ -14,6 +14,9 @@ modules = [
   # No v1.0-format release yet; track main and flag as work-in-progress until one exists
   { repo = "https://github.com/modelblocks-org/module_area_potentials", ref = "main", work_in_progress = true },
   "https://github.com/modelblocks-org/module_hydropower",
+  "https://github.com/modelblocks-org/module_co2stop_cdr",
+  "https://github.com/modelblocks-org/module_euro_gas_grid",
+  # "https://github.com/modelblocks-org/module_demand_electricity"
 ]
 
 ##
@@ -26,6 +29,7 @@ modules = [
 
 tools = [
   "https://github.com/modelblocks-org/gregor",
+  "https://github.com/modelblocks-org/clio-tools",
   "https://github.com/modelblocks-org/data-module-template",
   "https://github.com/modelblocks-org/docs",
   "https://github.com/modelblocks-org/website",
