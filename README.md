@@ -7,6 +7,8 @@ The website at [www.modelblocks.org](https://www.modelblocks.org/).
 - **Hugo** builds the site from that data.
 - GitHub Actions rebuilds and deploys nightly and on every push.
 
+The ingest pipeline was developed with the assistance of Claude Code.
+
 How to use:
 
 ```bash
