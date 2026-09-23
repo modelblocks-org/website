@@ -41,15 +41,26 @@ h3 {
 .site-header {
     display: flex;
     gap: 1rem;
-    align-items: baseline;
+    align-items: flex-end;
     flex-wrap: wrap;
     border-bottom: 1px solid var(--pico-muted-border-color);
+    padding-bottom: 0.4rem;
 }
 .site-header .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-weight: 700;
     text-decoration: none;
     margin-right: auto;
     color: var(--pico-color);
+}
+.site-header .brand .icon {
+    display: inline-flex;
+}
+.site-header .brand svg {
+    width: 4rem;
+    height: 4rem;
 }
 .site-header nav {
     display: flex;

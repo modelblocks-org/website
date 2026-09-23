@@ -10,7 +10,10 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="/">{{ .Site.Title }}</a>
+    <a class="brand" href="/">
+      {{ partial "icon.html" "logo" }}
+      <span>{{ .Site.Title }}</span>
+    </a>
     <nav>
       {{ range .Site.Menus.main }}
       {{ $current := or (eq $.RelPermalink .URL) (and (ne .URL "/") (hasPrefix $.RelPermalink .URL)) }}
