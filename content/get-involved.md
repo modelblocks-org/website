@@ -10,7 +10,7 @@ Join the discussion on our [Zulip chat]({{< param zulip_url >}}) to ask question
 
 ## Governance
 
-See [our goverance](https://github.com/modelblocks-org/.github/blob/main/GOVERNANCE.md) on GitHub, and our [code of conduct](https://github.com/modelblocks-org/.github/blob/main/CODE_OF_CONDUCT.md).
+See [our governance](https://github.com/modelblocks-org/.github/blob/main/GOVERNANCE.md) on GitHub, and our [code of conduct](https://github.com/modelblocks-org/.github/blob/main/CODE_OF_CONDUCT.md).
 
 ## Add a community module
 
