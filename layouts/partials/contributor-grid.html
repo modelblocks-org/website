@@ -9,10 +9,15 @@
     </a>
     {{ partial "contribution-chips.html" .contributions }}
     {{ if or .modules .tools }}
-    <p class="contributor-modules">
-      {{ range .modules }}<a class="module-pill" href="/modules/{{ . }}/">{{ . }}</a>{{ end }}
-      {{ range .tools }}<a class="module-pill tool" href="{{ .url }}" rel="noopener">{{ .name }}</a>{{ end }}
-    </p>
+    <details class="contributor-details">
+      <summary title="Show modules and tools" aria-label="Show modules and tools">
+        {{ partial "icon.html" "info" }}
+      </summary>
+      <p class="contributor-modules">
+        {{ range .modules }}<a class="module-pill" href="/modules/{{ . }}/">{{ . }}</a>{{ end }}
+        {{ range .tools }}<a class="module-pill tool" href="{{ .url }}" rel="noopener">{{ .name }}</a>{{ end }}
+      </p>
+    </details>
     {{ end }}
   </li>
   {{ end }}
