@@ -44,8 +44,7 @@ def parse_repo_url(url: str) -> tuple[str, str]:
     if len(parts) < 2:
         raise ValueError(f"cannot parse owner/name from {url!r}")
     name = parts[1]
-    if name.endswith(".git"):
-        name = name[:-4]
+    name = name.removesuffix(".git")
     return parts[0], name
 
 

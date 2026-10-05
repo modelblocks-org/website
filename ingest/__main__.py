@@ -84,7 +84,7 @@ def main() -> int:
                     f"duplicate module id {record['id']!r} (also from another entry)"
                 )
             records[record["id"]] = record
-        except Exception as exc:  # noqa: BLE001 - triage by tier
+        except Exception as exc:
             if entry["tier"] == "core":
                 print(f"FATAL: core module {who}: {exc}", file=sys.stderr)
                 raise
