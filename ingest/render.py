@@ -19,12 +19,11 @@ from urllib.parse import urljoin
 import nh3
 import yaml
 from markdown_it import MarkdownIt
+from pydantic import ValidationError
 from pygments import highlight as pygments_highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name, guess_lexer
 from pygments.util import ClassNotFound
-
-from pydantic import ValidationError
 
 from .schemas import Contributor, CopierAnswers, Interface, InterfaceStrict
 
